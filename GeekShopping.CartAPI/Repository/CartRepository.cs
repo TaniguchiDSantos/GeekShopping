@@ -48,9 +48,14 @@ namespace GeekShopping.CartAPI.Repository
                 CartHeader = await _context.CartHeaders
                     .FirstOrDefaultAsync(c => c.UserId == userId),
             };
-            cart.CartDetails = _context.CartDetails
+
+            if (cart.CartHeader != null)
+            {
+                cart.CartDetails = _context.CartDetails
                 .Where(c => c.CartHeaderId == cart.CartHeader.Id)
-                    .Include(c => c.Product);
+                .Include(c => c.Product);
+            }
+
             return _mapper.Map<CartVO>(cart);
         }
 
@@ -70,7 +75,7 @@ namespace GeekShopping.CartAPI.Repository
                     .Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
 
                 _context.CartDetails.Remove(cartDetail);
-                
+
                 if (total == 1)
                 {
                     var cartHeaderToRemove = await _context.CartHeaders
@@ -92,7 +97,7 @@ namespace GeekShopping.CartAPI.Repository
             //Checks if the product is already saved in the database if it does not exist then save
             var product = await _context.Products.FirstOrDefaultAsync(
                 p => p.Id == vo.CartDetails.FirstOrDefault().ProductId);
-            
+
             if (product == null)
             {
                 _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
@@ -139,7 +144,7 @@ namespace GeekShopping.CartAPI.Repository
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
                     _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
-                } 
+                }
             }
             return _mapper.Map<CartVO>(cart);
         }
