@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeekShopping.CouponAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20230715220531_AddCouponDataTablesOnDB")]
+    [Migration("20230716190024_AddCouponDataTablesOnDB")]
     partial class AddCouponDataTablesOnDB
     {
         /// <inheritdoc />
