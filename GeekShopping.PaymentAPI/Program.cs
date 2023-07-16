@@ -20,25 +20,25 @@ builder.Services.AddControllers();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
-    {
+{
         options.Authority = "https://localhost:4435/";
         options.TokenValidationParameters = new TokenValidationParameters
-        {
+    {
             ValidateAudience = false
         };
     });
 
 builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ApiScope", policy =>
     {
+    options.AddPolicy("ApiScope", policy =>
+        {
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("scope", "geek_shopping");
     });
 });
 
 builder.Services.AddSwaggerGen(c =>
-{
+                {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.PaymentAPI", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -47,25 +47,25 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
-    });
+            });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In= ParameterLocation.Header
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
                         },
-                        new List<string> ()
-                    }
-                });
-});
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In= ParameterLocation.Header
+                    },
+                    new List<string> ()
+                }
+            });
+        });
 
 var app = builder.Build();
 
@@ -73,7 +73,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShopping.PaymentAPI v1"));
 }
 
 app.UseHttpsRedirection();

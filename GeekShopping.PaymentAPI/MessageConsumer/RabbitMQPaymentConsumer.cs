@@ -31,9 +31,7 @@ namespace GeekShopping.PaymentAPI.MessageConsumer
             {
                 HostName = "localhost",
                 UserName = "guest",
-                Password = "guest",
-                VirtualHost = "/",
-                Port = 5672
+                Password = "guest"
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -68,7 +66,7 @@ namespace GeekShopping.PaymentAPI.MessageConsumer
 
             try
             {
-                _rabbitMQMessageSender.SendMessage(paymentResult, "orderpaymentresultqueue");
+                _rabbitMQMessageSender.SendMessage(paymentResult);
             }
             catch (Exception)
             {
