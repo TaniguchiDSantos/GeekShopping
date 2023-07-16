@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(options => {
 })
     .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
     .AddOpenIdConnect("oidc", options =>
-                {
+{
         options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
         options.GetClaimsFromUserInfoEndpoint = true;
         options.ClientId = "geek_shopping";
@@ -41,9 +41,9 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
-{
+        {
     app.UseExceptionHandler("/Home/Error");
-    }
+        }
 
 app.UseHttpsRedirection();
 
